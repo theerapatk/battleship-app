@@ -18,13 +18,15 @@ class SelectFormControl extends Component {
           <Col componentClass={ControlLabel} xs={3}>
             {this.props.label}
           </Col>
-          <Col xs={3}>
-            <FormControl componentClass="select" placeholder="select" onChange={this.handleChange}>
+          <Col xs={4}>
+            <FormControl 
+              componentClass="select"
+              placeholder="select"
+              onChange={this.handleChange}>
               <option value="select">select</option>
-              <option value="battleship">Battleship x1</option>
-              <option value="cruiser">Cruisers x2</option>
-              <option value="destroyer">Destroyers x3</option>
-              <option value="submarine">Submarines x4</option>
+              {this.props.ships.map(ship => 
+                <option key={ship.value} value={ship.value}>{ship.name} x{ship.amount}</option>
+              )}
             </FormControl>
           </Col>
         </FormGroup>

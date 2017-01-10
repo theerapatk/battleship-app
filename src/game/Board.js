@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 class Board extends Component {
   renderRow(props, boardId, rowIndex) {
-    const { gameBoards, shouldBoardUpdate } = this.props;
+    const { gameBoards } = this.props;
 
     var tdList = [];
     for (let columnIndex = 0; columnIndex < 10; columnIndex++) {

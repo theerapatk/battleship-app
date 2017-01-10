@@ -10,8 +10,28 @@ class DefenderTurn extends Component {
     this.state = {
     	row: null,
     	column: null,
-    	ship: null,
-      shouldBoardUpdate: false
+      selectedShip: null,
+      ships: [{
+        name: 'Battleship',
+        value: 'battleship',
+        size: 4,
+        amount: 1
+      }, {
+        name: 'Cruiser',
+        value: 'cruiser',
+        size: 3,
+        amount: 2
+      }, {
+        name: 'Destroyer',
+        value: 'destroyer',
+        size: 2,
+        amount: 3
+      }, {
+        name: 'Submarine',
+        value: 'submarine',
+        size: 1,
+        amount: 4
+      }],
     };
     this.handleTextFormChange = this.handleTextFormChange.bind(this);
     this.handleSelectFormChange = this.handleSelectFormChange.bind(this);
@@ -26,21 +46,41 @@ class DefenderTurn extends Component {
   	} else if (e.target.id === 'column') {
   		this.setState({column: +e.target.value});
   	}
-    this.setState({shouldBoardUpdate: false});
   }
 
   handleSelectFormChange(e) {
+    var selectedShip = null;
     if (e.target.value === 'select') {
-      this.setState({ship: null});
+      this.setState({selectedShip: selectedShip});
     } else {
-      this.setState({ship: e.target.value});
+      for (let i = 0; i < this.state.ships.length; i++) {
+        let ship = this.state.ships[i];
+        if (e.target.value === ship.value) {
+          this.setState({selectedShip: ship});
+          break;
+        }
+      }
     }
-    this.setState({shouldBoardUpdate: false});
   }
 
   handlePlaceShipClick() {
+    var selectedShip = null;
+    var ships = this.state.ships.slice();
+    for (let i = 0; i < ships.length; i++) {
+      let ship = ships[i];
+      if (this.state.selectedShip.value === ship.value) {
+        ship.amount--;
+        selectedShip = ship;
+        break;
+      }
+    }
+
+    this.setState({
+      selectedShip: selectedShip,
+      ships: ships,
+    });
+
     this.props.onPlaceShipClick(this.state.row, this.state.column);
-    this.setState({shouldBoardUpdate: true});
   }
 
   handleResetClick() {
@@ -53,7 +93,7 @@ class DefenderTurn extends Component {
 
   render() {
   	var diablePlaceButton = true;
-  	if (this.state.row && this.state.column && this.state.ship) {
+  	if (this.state.row && this.state.column && (this.state.selectedShip && this.state.selectedShip.amount !== 0)) {
   		diablePlaceButton = false;
   	}
 
@@ -62,11 +102,13 @@ class DefenderTurn extends Component {
 				<h1>Defender turn</h1>
 				<Board
           gameBoards={this.props.gameBoards}
-          isDefenderTurn={this.props.isDefenderTurn}
-          shouldBoardUpdate={this.state.shouldBoardUpdate} />
+          isDefenderTurn={this.props.isDefenderTurn} />
 			  <TextFormControl label="Enter row: " id={'row'} onChange={this.handleTextFormChange}/>
 			  <TextFormControl label="Enter column: " id={'column'} onChange={this.handleTextFormChange}/>
-			  <SelectFormControl label="Ship type: " onChange={this.handleSelectFormChange}/>
+			  <SelectFormControl
+          label="Ship type: "
+          ships={this.state.ships}
+          onChange={this.handleSelectFormChange}/>
 			  <div className='btn-group'>
 			  	<Button disabled={diablePlaceButton} onClick={this.handlePlaceShipClick}>Place ship</Button>
 			    <Button onClick={this.handleResetClick}>Reset board</Button>
