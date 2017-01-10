@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Board from './Board';
-import TextFormControl from './component/TextFormControl';
-import SelectFormControl from './component/SelectFormControl';
+import TextFormControl from '../component/TextFormControl';
+import SelectFormControl from '../component/SelectFormControl';
 import { Button } from 'react-bootstrap';
 
 class DefenderTurn extends Component {
@@ -10,7 +10,8 @@ class DefenderTurn extends Component {
     this.state = {
     	row: null,
     	column: null,
-    	ship: null
+    	ship: null,
+      shouldBoardUpdate: false
     };
     this.handleTextFormChange = this.handleTextFormChange.bind(this);
     this.handleSelectFormChange = this.handleSelectFormChange.bind(this);
@@ -21,24 +22,25 @@ class DefenderTurn extends Component {
 
   handleTextFormChange(e) {
   	if (e.target.id === 'row') {
-  		this.setState({row: e.target.value});
+  		this.setState({row: +e.target.value});
   	} else if (e.target.id === 'column') {
-  		this.setState({column: e.target.value});
+  		this.setState({column: +e.target.value});
   	}
+    this.setState({shouldBoardUpdate: false});
   }
 
   handleSelectFormChange(e) {
-  	if (e.target.value === 'select') {
- 			this.setState({ship: null});
-  	} else {
-	 		this.setState({ship: e.target.value});
-  	}
+    if (e.target.value === 'select') {
+      this.setState({ship: null});
+    } else {
+      this.setState({ship: e.target.value});
+    }
+    this.setState({shouldBoardUpdate: false});
   }
 
   handlePlaceShipClick() {
-  	console.log(this.state.row);
-  	console.log(this.state.column);
-  	console.log(this.state.ship);
+    this.props.onPlaceShipClick(this.state.row, this.state.column);
+    this.setState({shouldBoardUpdate: true});
   }
 
   handleResetClick() {
@@ -58,7 +60,10 @@ class DefenderTurn extends Component {
     return (
       <div>
 				<h1>Defender turn</h1>
-				<Board isDefenderTurn={this.props.isDefenderTurn} />
+				<Board
+          gameBoards={this.props.gameBoards}
+          isDefenderTurn={this.props.isDefenderTurn}
+          shouldBoardUpdate={this.state.shouldBoardUpdate} />
 			  <TextFormControl label="Enter row: " id={'row'} onChange={this.handleTextFormChange}/>
 			  <TextFormControl label="Enter column: " id={'column'} onChange={this.handleTextFormChange}/>
 			  <SelectFormControl label="Ship type: " onChange={this.handleSelectFormChange}/>
