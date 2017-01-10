@@ -5,8 +5,10 @@ class AttackerTurn extends Component {
   render() {
     return (
       <div>
-				<h1> Attacker turn </h1>
-					<Board isDefenderTurn={this.props.isDefenderTurn} />
+				<h1>Attacker turn</h1>
+					<Board
+						gameBoards={this.props.gameBoards}
+						isDefenderTurn={this.props.isDefenderTurn} />
 				  <div>Enter row: <input type="text" /> </div>
 				  <div>Enter column: <input type="text" /> </div>
 				  <div>

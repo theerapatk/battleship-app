@@ -18,17 +18,33 @@ class SelectFormControl extends Component {
           <Col componentClass={ControlLabel} xs={3}>
             {this.props.label}
           </Col>
-          <Col xs={4}>
-            <FormControl 
-              componentClass="select"
-              placeholder="select"
-              onChange={this.handleChange}>
-              <option value="select">select</option>
-              {this.props.ships.map(ship => 
-                <option key={ship.value} value={ship.value}>{ship.name} x{ship.amount}</option>
-              )}
-            </FormControl>
-          </Col>
+          {this.props.id === 'shipType' ? (
+            <Col xs={5}>
+              <FormControl 
+                componentClass="select"
+                placeholder="select"
+                onChange={this.handleChange}>
+                {this.props.items.map(item => 
+                  <option
+                    key={item.value}
+                    value={item.value}>{item.name}{` (Size: ${item.size})`} x{item.amount}</option>
+                )}
+              </FormControl>
+            </Col>
+          ) : (
+            <Col xs={3}>
+              <FormControl 
+                componentClass="select"
+                placeholder="select"
+                onChange={this.handleChange}>
+                {this.props.items.map(item => 
+                  <option
+                    key={item.value}
+                    value={item.value}>{item.name}</option>
+                )}
+              </FormControl>
+            </Col>
+          )}
         </FormGroup>
       </Form>
     );

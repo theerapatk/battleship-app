@@ -17,9 +17,18 @@ class BattleshipApp extends Component {
     this.handleConfirmClick = this.handleConfirmClick.bind(this);
   }
 
-  handlePlaceShipClick(row, column) {
+  handlePlaceShipClick(row, column, ship, direction) {
     var gameBoards = this.state.gameBoards.slice();
-    gameBoards[row][column] = 1;
+    var shipSize = ship.size;
+    if (direction === 'horizontal') {
+      for (let i = 0; i < shipSize; i++) {
+        gameBoards[row][column + i] = 1;
+      }
+    } else {
+      for (let i = 0; i < shipSize; i++) {
+        gameBoards[row + i][column] = 1;
+      }
+    }
     this.setState({gameBoards: gameBoards});
   }
 
@@ -33,11 +42,12 @@ class BattleshipApp extends Component {
       {this.state.isDefenderTurn ?
       	<DefenderTurn
           gameBoards={this.state.gameBoards}
-      		isDefenderTurn={this.state.isDefenderTurn}
-      		onPlaceShipClick={this.handlePlaceShipClick}
-      		onConfirmClick={this.handleConfirmClick} />
-      	:
-      	<AttackerTurn
+          isDefenderTurn={this.state.isDefenderTurn}
+          onPlaceShipClick={this.handlePlaceShipClick}
+          onConfirmClick={this.handleConfirmClick} />
+        :
+        <AttackerTurn
+          gameBoards={this.state.gameBoards}
       		isDefenderTurn={this.state.isDefenderTurn} />}
       </div>
     );

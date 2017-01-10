@@ -11,18 +11,17 @@ class TextFormControl extends Component {
   }
 
   handleChange(e) {
-  	var value = e.target.value;
-  	if (value.match(/^[0-9]$/) != null) {
-  		this.props.onChange(e);	
-  	} else {
-  		e.target.value = '';
+  	var value = null;
+  	if (e.target.value.match(/^[0-9]$/) != null) {
+  		value = +e.target.value;
   	}
-  	this.setState({value: e.target.value});
+  	this.props.onChange(e.target.id, value);	
+  	this.setState({value: value});
   }
 
   render() {
   	var isError = false;
-    if (this.state.value == null || this.state.value.trim() === '') {
+    if (this.state.value == null) {
       isError = true;
     }
 
