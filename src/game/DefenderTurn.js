@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import DefenderBoard from './DefenderBoard';
+import Board from './Board';
 import TextFormControl from '../control-component/TextFormControl';
 import SelectFormControl from '../control-component/SelectFormControl';
 import AlertDialog from '../dialog/AlertDialog';
@@ -162,7 +162,9 @@ class DefenderTurn extends Component {
     return (
       <div>
 				<h1>Defender turn</h1>
-				<DefenderBoard gameBoards={this.props.gameBoards} />
+				<Board
+          boardId="DefenderBoard"
+          gameBoards={this.props.gameBoards} />
 			  <TextFormControl label="Enter row: " id={'row'} onChange={this.handleTextFormChange} />
 			  <TextFormControl label="Enter column: " id={'column'} onChange={this.handleTextFormChange} />
 			  <SelectFormControl

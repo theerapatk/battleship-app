@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import AttackerBoard from './AttackerBoard';
+import Board from './Board';
 import TextFormControl from '../control-component/TextFormControl';
 import StaticFormControl from '../control-component/StaticFormControl';
 import { Button } from 'react-bootstrap';
@@ -37,7 +37,7 @@ class AttackerTurn extends Component {
   	if (defenderGameBoards[row][column] === 1) {
   		attackerGameBoards[row][column] = 1;
   	} else {
-  		attackerGameBoards[row][column] = 0;
+  		attackerGameBoards[row][column] = 2;
   	}
 
 		this.setState({
@@ -64,7 +64,8 @@ class AttackerTurn extends Component {
     return (
       <div>
 				<h1>Attacker turn</h1>
-					<AttackerBoard
+					<Board
+						boardId="AttackerBoard"
 						gameBoards={attackerGameBoards} />
 				  <TextFormControl
 				  	label="Enter row: "

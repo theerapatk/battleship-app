@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class DefenderBoard extends Component {
+class Board extends Component {
   renderRow(props, boardId, rowIndex) {
     const { gameBoards } = this.props;
 
@@ -15,7 +15,7 @@ class DefenderBoard extends Component {
 
       tdList.push(<td
                     key={columnIndex}
-                    id={boardId + "-td" + rowIndex + columnIndex}
+                    id={boardId + "-td" + rowIndex + columnIndex} 
                     className={className} />
       );
     }
@@ -28,8 +28,7 @@ class DefenderBoard extends Component {
   }
   
   render() {
-    const { gameBoards } = this.props;
-    const boardId = 'DefenderBoard';
+    const { gameBoards, boardId } = this.props;
 
     var trList = [];
     for (let rowIndex = 0; rowIndex < gameBoards.length; rowIndex++) {
@@ -46,4 +45,4 @@ class DefenderBoard extends Component {
   }
 }
 
-export default DefenderBoard;
+export default Board;
