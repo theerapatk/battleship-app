@@ -6,10 +6,17 @@ class Board extends Component {
 
     var tdList = [];
     for (let columnIndex = 0; columnIndex < 10; columnIndex++) {
+      var className = '';
+      if (gameBoards[rowIndex][columnIndex] === 1) {
+        className = 'Board-blackcell';
+      } else if (gameBoards[rowIndex][columnIndex] === 2) {
+        className = 'Board-adjacentcell';
+      }
+
       tdList.push(<td
                     key={columnIndex}
                     id={boardId + "-td" + rowIndex + columnIndex}
-                    className={gameBoards[rowIndex][columnIndex] ? "Board-blackcell" : ""} />
+                    className={className} />
       );
     }
 

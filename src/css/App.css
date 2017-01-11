@@ -13,6 +13,9 @@
 .Board-blackcell {
 	background-color: black;
 }
+.Board-adjacentcell {
+	background-color: lavenderblush;
+}
 
 .modal {
   text-align: center;

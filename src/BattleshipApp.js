@@ -17,16 +17,35 @@ class BattleshipApp extends Component {
     this.handleConfirmClick = this.handleConfirmClick.bind(this);
   }
 
+  fillAdjacentCell(row, column, gameBoards, adjacentValue) {
+    var gameBoardsLength = gameBoards.length;
+
+    for (let rowIndex = row - 1; rowIndex < row + 2; rowIndex++) {
+      for (let columnIndex = column - 1; columnIndex < column + 2; columnIndex++) {
+        if (-1 < rowIndex && rowIndex < gameBoardsLength &&
+            -1 < columnIndex && columnIndex < gameBoardsLength &&
+            (rowIndex !== row || columnIndex !== column)) {
+          if (gameBoards[rowIndex][columnIndex] == null) {
+            gameBoards[rowIndex][columnIndex] = adjacentValue;
+          }
+        }
+      }
+    }
+  }
+
   handlePlaceShipClick(row, column, ship, direction) {
     var gameBoards = this.state.gameBoards.slice();
     var shipSize = ship.size;
+    var adjacentValue = 2;
     if (direction === 'horizontal') {
       for (let i = 0; i < shipSize; i++) {
         gameBoards[row][column + i] = 1;
+        this.fillAdjacentCell(row, column + i, gameBoards, adjacentValue);
       }
-    } else {
+    } else if (direction === 'vertical') {
       for (let i = 0; i < shipSize; i++) {
         gameBoards[row + i][column] = 1;
+        this.fillAdjacentCell(row + i, column, gameBoards, adjacentValue);
       }
     }
     this.setState({gameBoards: gameBoards});
@@ -39,16 +58,17 @@ class BattleshipApp extends Component {
   render() {
     return (
     	<div className="BattleshipApp-container">
-      {this.state.isDefenderTurn ?
+      {this.state.isDefenderTurn ? (
       	<DefenderTurn
           gameBoards={this.state.gameBoards}
           isDefenderTurn={this.state.isDefenderTurn}
           onPlaceShipClick={this.handlePlaceShipClick}
           onConfirmClick={this.handleConfirmClick} />
-        :
+      ) : (
         <AttackerTurn
           gameBoards={this.state.gameBoards}
-      		isDefenderTurn={this.state.isDefenderTurn} />}
+      		isDefenderTurn={this.state.isDefenderTurn} />
+      )}
       </div>
     );
   }
