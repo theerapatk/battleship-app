@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Board from './Board';
-import TextFormControl from '../component/TextFormControl';
-import SelectFormControl from '../component/SelectFormControl';
+import DefenderBoard from './DefenderBoard';
+import TextFormControl from '../control-component/TextFormControl';
+import SelectFormControl from '../control-component/SelectFormControl';
 import AlertDialog from '../dialog/AlertDialog';
 import { Button } from 'react-bootstrap';
 
@@ -149,39 +149,39 @@ class DefenderTurn extends Component {
   	}
 
     var diableConfirmButton = false;
-    for (let i = 0; i < this.state.ships.length; i++) {
-      var ship = this.state.ships[i];
-      if (ship.amount !== 0) {
-         diableConfirmButton = true;
-         break;
-      }
-    }
+    // for (let i = 0; i < this.state.ships.length; i++) {
+    //   var ship = this.state.ships[i];
+    //   if (ship.amount !== 0) {
+    //      diableConfirmButton = true;
+    //      break;
+    //   }
+    // }
+
+    const { ships, directions, isDialogActive } = this.state;
 
     return (
       <div>
 				<h1>Defender turn</h1>
-				<Board
-          gameBoards={this.props.gameBoards}
-          isDefenderTurn={this.props.isDefenderTurn} />
-			  <TextFormControl label="Enter row: " id={'row'} onChange={this.handleTextFormChange}/>
-			  <TextFormControl label="Enter column: " id={'column'} onChange={this.handleTextFormChange}/>
+				<DefenderBoard gameBoards={this.props.gameBoards} />
+			  <TextFormControl label="Enter row: " id={'row'} onChange={this.handleTextFormChange} />
+			  <TextFormControl label="Enter column: " id={'column'} onChange={this.handleTextFormChange} />
 			  <SelectFormControl
           label="Ship type: "
           id={'shipType'}
-          items={this.state.ships}
-          onChange={this.handleSelectShipChange}/>
+          items={ships}
+          onChange={this.handleSelectShipChange} />
         <SelectFormControl
           label="Ship direction: "
           id={'shipDirection'}
-          items={this.state.directions}
-          onChange={this.handleSelectDirectionsChange}/>
+          items={directions}
+          onChange={this.handleSelectDirectionsChange} />
 			  <div className='btn-group'>
 			  	<Button disabled={diablePlaceButton} onClick={this.handlePlaceShipClick}>Place ship</Button>
 			    <Button onClick={this.handleResetClick}>Reset board</Button>
 			    <Button disabled={diableConfirmButton} onClick={this.handleConfirmClick}>Confirm board</Button>
 			  </div>
         <AlertDialog
-          isDialogActive={this.state.isDialogActive}
+          isDialogActive={isDialogActive}
           title={'Alert'}
           content={'Cannot place a ship, please modify the criteria.'}
           onCloseDialog={this.handleCloseDialog} />

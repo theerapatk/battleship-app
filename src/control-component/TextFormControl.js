@@ -25,16 +25,18 @@ class TextFormControl extends Component {
       isError = true;
     }
 
+    const { label, id } = this.props;
+
     return (
       <Form componentClass="fieldset" horizontal>
         <FormGroup validationState={isError ? 'error' : null}>
           <Col componentClass={ControlLabel} xs={3}>
-            {this.props.label}
+            {label}
           </Col>
           <Col xs={3}>
             <FormControl
               type="text"
-              id={this.props.id}
+              id={id}
               onChange={this.handleChange} />
           </Col>
           <Col componentClass={ControlLabel} xs={4}>

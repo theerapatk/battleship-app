@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
-class Board extends Component {
+class DefenderBoard extends Component {
   renderRow(props, boardId, rowIndex) {
     const { gameBoards } = this.props;
 
     var tdList = [];
-    for (let columnIndex = 0; columnIndex < 10; columnIndex++) {
+    for (let columnIndex = 0; columnIndex < gameBoards.length; columnIndex++) {
       var className = '';
       if (gameBoards[rowIndex][columnIndex] === 1) {
         className = 'Board-blackcell';
@@ -28,11 +28,11 @@ class Board extends Component {
   }
   
   render() {
-    const { isDefenderTurn } = this.props;
-    const boardId = isDefenderTurn ? 'DefenderTurn' : 'AttackerTurn';
+    const { gameBoards } = this.props;
+    const boardId = 'DefenderBoard';
 
     var trList = [];
-    for (let rowIndex = 0; rowIndex < 10; rowIndex++) {
+    for (let rowIndex = 0; rowIndex < gameBoards.length; rowIndex++) {
       trList.push(this.renderRow(this.props, boardId, rowIndex));
     }
 
@@ -46,4 +46,4 @@ class Board extends Component {
   }
 }
 
-export default Board;
+export default DefenderBoard;

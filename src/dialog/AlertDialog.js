@@ -12,20 +12,22 @@ class AlertDialog extends Component {
   }
 
   render() {
+    const { isDialogActive, title, content } = this.props;
+
     return (
       <div>
         <Modal 
           dialogClassName="ConfirmDialog-modal"
-          show={this.props.isDialogActive}
+          show={isDialogActive}
           onHide={this.handleCloseDialog}
           aria-labelledby="contained-modal-title">
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title">
-              {this.props.title}
+              {title}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            {this.props.content}
+            {content}
           </Modal.Body>
           <Modal.Footer>
             <Button bsStyle="primary" onClick={this.handleCloseDialog}>OK</Button>

@@ -55,18 +55,20 @@ class BattleshipApp extends Component {
   }
 
   render() {
+    const { isDefenderTurn, gameBoards } = this.state;
+
     return (
     	<div className="BattleshipApp-container">
-      {this.state.isDefenderTurn ? (
+      {isDefenderTurn ? (
       	<DefenderTurn
-          gameBoards={this.state.gameBoards}
-          isDefenderTurn={this.state.isDefenderTurn}
+          gameBoards={gameBoards}
+          isDefenderTurn={isDefenderTurn}
           onPlaceShipClick={this.handlePlaceShipClick}
           onConfirmClick={this.handleConfirmClick} />
       ) : (
         <AttackerTurn
-          gameBoards={this.state.gameBoards}
-      		isDefenderTurn={this.state.isDefenderTurn} />
+          defenderGameBoards={gameBoards}
+      		isDefenderTurn={isDefenderTurn} />
       )}
       </div>
     );
