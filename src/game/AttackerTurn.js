@@ -18,6 +18,7 @@ class AttackerTurn extends Component {
     };
     this.handleTextFormChange = this.handleTextFormChange.bind(this);
     this.handleAttackClick = this.handleAttackClick.bind(this);
+    this.handleResetClick = this.handleResetClick.bind(this);
   }
 
   handleTextFormChange(id, value) {
@@ -44,6 +45,10 @@ class AttackerTurn extends Component {
 		});
 
 		this.props.onAttackClick(row, column);
+  }
+
+  handleResetClick() {
+    window.location.reload();
   }
 
   render() {
@@ -80,6 +85,7 @@ class AttackerTurn extends Component {
 				  {isGameOver ? (
 				  	<StaticFormControl label="Game Over: " value={`Win!  You completed the game in ${movesCount} moves.`} />
 				  ) : null}
+				  <Button onClick={this.handleResetClick}>Reset board</Button>
 			</div>
     );
   }

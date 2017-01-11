@@ -47,7 +47,6 @@ class BattleshipApp extends Component {
       value: ship.value,
       id: Date.now(),
       size: ship.size,
-      coordinates: [],
       hit: 0,
       sunk: false
     };
@@ -56,7 +55,6 @@ class BattleshipApp extends Component {
       for (let i = 0; i < shipSize; i++) {
         let shipColumn = column + i;
         gameBoards[row][shipColumn] = 1;
-        placedShip.coordinates.push(row + '' + shipColumn);
         this.cooridnateMap[row + '' + shipColumn] = placedShip.id;
         this.fillAdjacentCell(row, shipColumn, gameBoards, adjacentValue);
       }
@@ -64,7 +62,6 @@ class BattleshipApp extends Component {
       for (let i = 0; i < shipSize; i++) {
         let shipRow = row + i;
         gameBoards[shipRow][column] = 1;
-        placedShip.coordinates.push(shipRow + '' + column);
         this.cooridnateMap[shipRow + '' + column] = placedShip.id;
         this.fillAdjacentCell(shipRow, column, gameBoards, adjacentValue);
       }
