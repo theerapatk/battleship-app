@@ -14,7 +14,8 @@ class BattleshipApp extends Component {
       isDefenderTurn: true,
       attackResultMessage: '',
       shipSunkNumber: 0,
-      movesCount: 0
+      movesCount: 0,
+      missedCount: 0
     };
     this.placedShips = [];
     this.cooridnateMap = {};
@@ -102,7 +103,8 @@ class BattleshipApp extends Component {
     } else {
       this.setState({
         attackResultText: 'Miss!',
-        movesCount: this.state.movesCount + 1
+        movesCount: this.state.movesCount + 1,
+        missedCount: this.state.missedCount + 1
       });
     }
   }
@@ -118,7 +120,7 @@ class BattleshipApp extends Component {
   }
 
   render() {
-    const { isDefenderTurn, gameBoards, attackResultText, shipSunkNumber, movesCount } = this.state;
+    const { isDefenderTurn, gameBoards, attackResultText, shipSunkNumber, movesCount, missedCount } = this.state;
 
     var isGameOver = this.checkIfGameIsOver();
 
@@ -136,7 +138,8 @@ class BattleshipApp extends Component {
           attackResultText={attackResultText}
           shipSunkNumber={shipSunkNumber}
           isGameOver={isGameOver} 
-          movesCount={movesCount} />
+          movesCount={movesCount}
+          missedCount={missedCount} />
       )}
       </div>
     );

@@ -53,7 +53,7 @@ class AttackerTurn extends Component {
 
   render() {
     const { attackerGameBoards, row, column } = this.state;
-    const { attackResultText, shipSunkNumber, isGameOver, movesCount } = this.props;
+    const { attackResultText, shipSunkNumber, isGameOver, movesCount, missedCount } = this.props;
   	var diableAttackButton = true;
   	if (row != null && column != null) {
   		if (attackerGameBoards[row][column] == null) {
@@ -83,7 +83,9 @@ class AttackerTurn extends Component {
 				  <StaticFormControl label="Ship sank: " value={shipSunkNumber} />
 				  <StaticFormControl label="Ship remain: " value={10 - shipSunkNumber} />
 				  {isGameOver ? (
-				  	<StaticFormControl label="Game Over: " value={`Win!  You completed the game in ${movesCount} moves.`} />
+				  	<StaticFormControl
+				  		label="Game Over: "
+				  		value={`Win! You completed the game in ${movesCount} moves with ${missedCount} missed shot(s).`} />
 				  ) : null}
 				  <Button onClick={this.handleResetClick}>Reset board</Button>
 			</div>
