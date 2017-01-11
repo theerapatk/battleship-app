@@ -19,7 +19,6 @@ class BattleshipApp extends Component {
 
   fillAdjacentCell(row, column, gameBoards, adjacentValue) {
     var gameBoardsLength = gameBoards.length;
-
     for (let rowIndex = row - 1; rowIndex < row + 2; rowIndex++) {
       for (let columnIndex = column - 1; columnIndex < column + 2; columnIndex++) {
         if (-1 < rowIndex && rowIndex < gameBoardsLength &&

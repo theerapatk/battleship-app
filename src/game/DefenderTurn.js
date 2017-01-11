@@ -81,16 +81,21 @@ class DefenderTurn extends Component {
   }
 
   checkIfCanPlaceShip() {
-    const gameBoardsLength = this.props.gameBoards.length;
-    const shipSize = this.state.selectedShip.size;
-    if (this.state.selectedDirection === 'horizontal') {
-      if (this.state.column + shipSize > gameBoardsLength) {
+    const { gameBoards } = this.props;
+    const { row, column, selectedShip, selectedDirection } = this.state;
+
+    if (selectedDirection === 'horizontal') {
+      if (column + selectedShip.size > gameBoards.length) {
         return false;
       }
-    } else if (this.state.selectedDirection === 'vertical') {
-      if (this.state.row + shipSize > gameBoardsLength) {
+    } else if (selectedDirection === 'vertical') {
+      if (row + selectedShip.size > gameBoards.length) {
         return false;
       }
+    }
+
+    if (gameBoards[row][column] != null) {
+      return false;
     }
 
     return true;
