@@ -3,18 +3,24 @@ import DefenderTurn from './game/DefenderTurn';
 import AttackerTurn from './game/AttackerTurn';
 
 class BattleshipApp extends Component {
-	constructor(props) {
+  constructor(props) {
     super(props);
     var gameBoards = new Array(10).fill(null);
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < gameBoards.length; i++) {
       gameBoards[i] = new Array(10).fill(null);
     }
     this.state = {
       gameBoards: gameBoards,
-      isDefenderTurn: true
+      isDefenderTurn: true,
+      attackResultMessage: '',
+      shipSunkNumber: 0,
+      movesCount: 0
     };
+    this.placedShips = [];
+    this.cooridnateMap = {};
     this.handlePlaceShipClick = this.handlePlaceShipClick.bind(this);
     this.handleConfirmClick = this.handleConfirmClick.bind(this);
+    this.handleAttackClick = this.handleAttackClick.bind(this);
   }
 
   fillAdjacentCell(row, column, gameBoards, adjacentValue) {
@@ -36,39 +42,104 @@ class BattleshipApp extends Component {
     var gameBoards = this.state.gameBoards.slice();
     var shipSize = ship.size;
     var adjacentValue = 2;
+    var placedShip = {
+      name: ship.name,
+      value: ship.value,
+      id: Date.now(),
+      size: ship.size,
+      coordinates: [],
+      hit: 0,
+      sunk: false
+    };
+
     if (direction === 'horizontal') {
       for (let i = 0; i < shipSize; i++) {
-        gameBoards[row][column + i] = 1;
-        this.fillAdjacentCell(row, column + i, gameBoards, adjacentValue);
+        let shipColumn = column + i;
+        gameBoards[row][shipColumn] = 1;
+        placedShip.coordinates.push(row + '' + shipColumn);
+        this.cooridnateMap[row + '' + shipColumn] = placedShip.id;
+        this.fillAdjacentCell(row, shipColumn, gameBoards, adjacentValue);
       }
     } else if (direction === 'vertical') {
       for (let i = 0; i < shipSize; i++) {
-        gameBoards[row + i][column] = 1;
-        this.fillAdjacentCell(row + i, column, gameBoards, adjacentValue);
+        let shipRow = row + i;
+        gameBoards[shipRow][column] = 1;
+        placedShip.coordinates.push(shipRow + '' + column);
+        this.cooridnateMap[shipRow + '' + column] = placedShip.id;
+        this.fillAdjacentCell(shipRow, column, gameBoards, adjacentValue);
       }
     }
-    this.setState({gameBoards: gameBoards});
+
+    this.placedShips.push(placedShip);
+
+    this.setState({
+      gameBoards: gameBoards
+    });
   }
 
   handleConfirmClick() {
-  	this.setState({isDefenderTurn: !this.state.isDefenderTurn});
+    this.setState({isDefenderTurn: !this.state.isDefenderTurn});
+  }
+
+  handleAttackClick(row, column) {
+    var idFromCoordianate = this.cooridnateMap[row + '' + column];
+
+    if (idFromCoordianate != null) {
+      for (let i = 0; i < this.placedShips.length; i++) {
+        var placedShip = this.placedShips[i];
+        if (placedShip.id === idFromCoordianate) {
+          placedShip.hit++;
+          this.setState({
+            attackResultText: 'Hit!',
+            movesCount: this.state.movesCount + 1
+          });
+          if (placedShip.hit === placedShip.size) {
+            placedShip.sunk = true;
+            this.setState({
+              attackResultText: `You just sank the ${placedShip.name}`,
+              shipSunkNumber: this.state.shipSunkNumber + 1
+            });
+          }
+        }
+      }
+    } else {
+      this.setState({
+        attackResultText: 'Miss!',
+        movesCount: this.state.movesCount + 1
+      });
+    }
+  }
+
+  checkIfGameIsOver() {
+    for (let i = 0; i < this.placedShips.length; i++) {
+      var placedShip = this.placedShips[i];
+      if (placedShip.sunk === false) {
+        return false;
+      }
+    }
+    return true;
   }
 
   render() {
-    const { isDefenderTurn, gameBoards } = this.state;
+    const { isDefenderTurn, gameBoards, attackResultText, shipSunkNumber, movesCount } = this.state;
+
+    var isGameOver = this.checkIfGameIsOver();
 
     return (
     	<div className="BattleshipApp-container">
       {isDefenderTurn ? (
       	<DefenderTurn
           gameBoards={gameBoards}
-          isDefenderTurn={isDefenderTurn}
           onPlaceShipClick={this.handlePlaceShipClick}
           onConfirmClick={this.handleConfirmClick} />
       ) : (
         <AttackerTurn
           defenderGameBoards={gameBoards}
-      		isDefenderTurn={isDefenderTurn} />
+          onAttackClick={this.handleAttackClick}
+          attackResultText={attackResultText}
+          shipSunkNumber={shipSunkNumber}
+          isGameOver={isGameOver} 
+          movesCount={movesCount} />
       )}
       </div>
     );

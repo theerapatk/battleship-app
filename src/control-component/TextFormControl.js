@@ -25,7 +25,8 @@ class TextFormControl extends Component {
       isError = true;
     }
 
-    const { label, id } = this.props;
+    const { label, id, disabled } = this.props;
+    var diabledControl = disabled ? disabled : false;
 
     return (
       <Form componentClass="fieldset" horizontal>
@@ -37,6 +38,7 @@ class TextFormControl extends Component {
             <FormControl
               type="text"
               id={id}
+              disabled={diabledControl}
               onChange={this.handleChange} />
           </Col>
           <Col componentClass={ControlLabel} xs={4}>

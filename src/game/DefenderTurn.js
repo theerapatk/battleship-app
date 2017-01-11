@@ -149,13 +149,13 @@ class DefenderTurn extends Component {
   	}
 
     var diableConfirmButton = false;
-    // for (let i = 0; i < this.state.ships.length; i++) {
-    //   var ship = this.state.ships[i];
-    //   if (ship.amount !== 0) {
-    //      diableConfirmButton = true;
-    //      break;
-    //   }
-    // }
+    for (let i = 0; i < this.state.ships.length; i++) {
+      var ship = this.state.ships[i];
+      if (ship.amount !== 0) {
+         diableConfirmButton = true;
+         break;
+      }
+    }
 
     const { ships, directions, isDialogActive } = this.state;
 
