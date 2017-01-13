@@ -8,10 +8,10 @@ class StaticFormControl extends Component {
     return (
       <Form componentClass="fieldset" horizontal>
         <FormGroup>
-          <Col componentClass={ControlLabel} xs={this.CONFIG.labelWidth}>
+          <Col componentClass={ControlLabel} xs={StaticFormControl.CONFIG.labelWidth}>
             {label}
           </Col>
-          <Col xs={controlWidth || this.CONFIG.controlWidth}>
+          <Col xs={controlWidth || StaticFormControl.CONFIG.controlWidth}>
             <FormControl.Static>
               {value}
             </FormControl.Static>
@@ -21,7 +21,7 @@ class StaticFormControl extends Component {
     );
   }
 
-  get CONFIG() {
+  static get CONFIG() {
     return {
       labelWidth: 3,
       controlWidth: 9

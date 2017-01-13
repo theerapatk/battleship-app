@@ -25,13 +25,13 @@ class SelectFormControl extends Component {
     return (
       <Form componentClass="fieldset" horizontal>
         <FormGroup>
-          <Col componentClass={ControlLabel} xs={this.CONFIG.labelWidth}>
+          <Col componentClass={ControlLabel} xs={SelectFormControl.CONFIG.labelWidth}>
             {label}
           </Col>
-          <Col xs={controlWidth || this.CONFIG.controlWidth}>
+          <Col xs={controlWidth || SelectFormControl.CONFIG.controlWidth}>
             <FormControl 
               componentClass="select"
-              placeholder={this.CONFIG.placeholder}
+              placeholder={SelectFormControl.CONFIG.placeholder}
               onChange={this.handleChange}>
               {items.map(item =>
                 <option
@@ -45,7 +45,7 @@ class SelectFormControl extends Component {
     );
   }
 
-  get CONFIG() {
+  static get CONFIG() {
     return {
       labelWidth: 3,
       controlWidth: 3,

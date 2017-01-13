@@ -30,26 +30,26 @@ class DigitFormControl extends Component {
     return (
       <Form componentClass="fieldset" horizontal>
         <FormGroup validationState={value == null ? 'error' : null}>
-          <Col componentClass={ControlLabel} xs={this.CONFIG.labelWidth}>
+          <Col componentClass={ControlLabel} xs={DigitFormControl.CONFIG.labelWidth}>
             {label}
           </Col>
-          <Col xs={this.CONFIG.controlWidth}>
+          <Col xs={DigitFormControl.CONFIG.controlWidth}>
             <FormControl
               type="text"
               id={id}
               disabled={disabled ? disabled : false}
-              placeholder={this.CONFIG.placeholder}
+              placeholder={DigitFormControl.CONFIG.placeholder}
               onChange={this.handleChange} />
           </Col>
-          <Col componentClass={ControlLabel} xs={this.CONFIG.errorLabelWidth}>
-            {value == null ? this.CONFIG.errorMessage : null}
+          <Col componentClass={ControlLabel} xs={DigitFormControl.CONFIG.errorLabelWidth}>
+            {value == null ? DigitFormControl.CONFIG.errorMessage : null}
           </Col>
         </FormGroup>
       </Form>
     );
   }
 
-  get CONFIG() {
+  static get CONFIG() {
     return {
       labelWidth: 3,
       controlWidth: 3,
