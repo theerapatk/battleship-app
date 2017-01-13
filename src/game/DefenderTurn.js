@@ -101,28 +101,27 @@ class DefenderTurn extends Component {
     return true;
   }
 
+  updateShipAndSelectedShipState() {
+    var ships = this.state.ships.slice();
+    for (let i = 0; i < ships.length; i++) {
+      let ship = ships[i];
+      if (this.state.selectedShip.value === ship.value) {
+        ship.amount--;
+        this.setState({
+          selectedShip: ship,
+          ships: ships,
+        });
+      }
+    }
+  }
+
   handlePlaceShipClick() {
     if (this.checkIfCanPlaceShip() === false) {
       this.setState({isDialogActive: true});
       return;
     }
 
-    var selectedShip = null;
-    var ships = this.state.ships.slice();
-    for (let i = 0; i < ships.length; i++) {
-      let ship = ships[i];
-      if (this.state.selectedShip.value === ship.value) {
-        ship.amount--;
-        selectedShip = ship;
-        break;
-      }
-    }
-
-    this.setState({
-      selectedShip: selectedShip,
-      ships: ships,
-    });
-
+    this.updateShipAndSelectedShipState();
     this.props.onPlaceShipClick(this.state.row,
                                 this.state.column,
                                 this.state.selectedShip,
@@ -141,21 +140,27 @@ class DefenderTurn extends Component {
     this.setState({isDialogActive: false});
   }
 
-  render() {
-  	var diablePlaceButton = true;
-  	if (this.state.row != null && this.state.column != null &&
+  checkIfAllInputFieldsAreValid() {
+    if (this.state.row != null && this.state.column != null &&
       (this.state.selectedShip && this.state.selectedShip.amount !== 0)) {
-  		diablePlaceButton = false;
-  	}
-
-    var diableConfirmButton = false;
+      return true;
+    }
+    return false;
+  }
+  
+  checkIfAllShipsArePlaced() {
     for (let i = 0; i < this.state.ships.length; i++) {
       var ship = this.state.ships[i];
       if (ship.amount !== 0) {
-         diableConfirmButton = true;
-         break;
+         return false;
       }
     }
+    return true;
+  }
+
+  render() {
+    const disablePlacShipButton = !this.checkIfAllInputFieldsAreValid();
+    const disableConfirmButton = !this.checkIfAllShipsArePlaced();
 
     const { ships, directions, isDialogActive } = this.state;
 
@@ -178,9 +183,9 @@ class DefenderTurn extends Component {
           items={directions}
           onChange={this.handleSelectDirectionsChange} />
 			  <div className='btn-group'>
-			  	<Button disabled={diablePlaceButton} onClick={this.handlePlaceShipClick}>Place ship</Button>
+			  	<Button disabled={disablePlacShipButton} onClick={this.handlePlaceShipClick}>Place ship</Button>
 			    <Button onClick={this.handleResetClick}>Reset board</Button>
-			    <Button disabled={diableConfirmButton} onClick={this.handleConfirmClick}>Confirm board</Button>
+			    <Button disabled={disableConfirmButton} onClick={this.handleConfirmClick}>Confirm board</Button>
 			  </div>
         <AlertDialog
           isDialogActive={isDialogActive}

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
 class Board extends Component {
-  renderRow(props, boardId, rowIndex) {
-    const { gameBoards } = this.props;
+  renderRow(rowIndex) {
+    const { gameBoards, boardId } = this.props;
 
     var tdList = [];
     for (let columnIndex = 0; columnIndex < gameBoards.length; columnIndex++) {
@@ -13,10 +13,11 @@ class Board extends Component {
         className = 'Board-adjacentcell';
       }
 
-      tdList.push(<td
-                    key={columnIndex}
-                    id={boardId + "-td" + rowIndex + columnIndex} 
-                    className={className} />
+      tdList.push(
+        <td
+          key={columnIndex}
+          id={boardId + "-td" + rowIndex + columnIndex} 
+          className={className} />
       );
     }
 
@@ -28,11 +29,11 @@ class Board extends Component {
   }
   
   render() {
-    const { gameBoards, boardId } = this.props;
+    const { gameBoards } = this.props;
 
     var trList = [];
     for (let rowIndex = 0; rowIndex < gameBoards.length; rowIndex++) {
-      trList.push(this.renderRow(this.props, boardId, rowIndex));
+      trList.push(this.renderRow(rowIndex));
     }
 
     return (
