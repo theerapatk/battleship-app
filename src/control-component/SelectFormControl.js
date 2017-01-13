@@ -11,45 +11,46 @@ class SelectFormControl extends Component {
     this.props.onChange(e);
   }
 
+  formatValueById(id, item) {
+    if (id === 'shipType') {
+      return item.name + `(Size: ${item.size}) x` + item.amount;
+    } else if (id === 'shipDirection') {
+      return item.name;
+    }
+  }
+
   render() {
-    const { label, id, items } = this.props;
+    const { label, id, items, controlWidth } = this.props;
 
     return (
       <Form componentClass="fieldset" horizontal>
         <FormGroup>
-          <Col componentClass={ControlLabel} xs={3}>
+          <Col componentClass={ControlLabel} xs={this.CONFIG.labelWidth}>
             {label}
           </Col>
-          {id === 'shipType' ? (
-            <Col xs={5}>
-              <FormControl 
-                componentClass="select"
-                placeholder="select"
-                onChange={this.handleChange}>
-                {items.map(item => 
-                  <option
-                    key={item.value}
-                    value={item.value}>{item.name}{` (Size: ${item.size})`} x{item.amount}</option>
-                )}
-              </FormControl>
-            </Col>
-          ) : (
-            <Col xs={3}>
-              <FormControl 
-                componentClass="select"
-                placeholder="select"
-                onChange={this.handleChange}>
-                {items.map(item => 
-                  <option
-                    key={item.value}
-                    value={item.value}>{item.name}</option>
-                )}
-              </FormControl>
-            </Col>
-          )}
+          <Col xs={controlWidth || this.CONFIG.controlWidth}>
+            <FormControl 
+              componentClass="select"
+              placeholder={this.CONFIG.placeholder}
+              onChange={this.handleChange}>
+              {items.map(item =>
+                <option
+                  key={item.value}
+                  value={item.value}>{this.formatValueById(id, item)}</option>
+              )}
+            </FormControl>
+          </Col>
         </FormGroup>
       </Form>
     );
+  }
+
+  get CONFIG() {
+    return {
+      labelWidth: 3,
+      controlWidth: 3,
+      placeholder: "select"
+    };
   }
 }
 

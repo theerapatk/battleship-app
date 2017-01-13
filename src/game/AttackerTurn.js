@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Board from './Board';
-import TextFormControl from '../control-component/TextFormControl';
+import DigitFormControl from '../control-component/DigitFormControl';
 import StaticFormControl from '../control-component/StaticFormControl';
 import { Button } from 'react-bootstrap';
 
@@ -16,12 +16,12 @@ class AttackerTurn extends Component {
     	row: null,
     	column: null
     };
-    this.handleTextFormChange = this.handleTextFormChange.bind(this);
+    this.handleDigitFormChange = this.handleDigitFormChange.bind(this);
     this.handleAttackClick = this.handleAttackClick.bind(this);
     this.handleResetClick = this.handleResetClick.bind(this);
   }
 
-  handleTextFormChange(id, value) {
+  handleDigitFormChange(id, value) {
   	if (id === 'row') {
   		this.setState({row: value});
   	} else if (id === 'column') {
@@ -67,16 +67,16 @@ class AttackerTurn extends Component {
 					<Board
 						boardId="AttackerBoard"
 						gameBoards={attackerGameBoards} />
-				  <TextFormControl
+				  <DigitFormControl
 				  	label="Enter row: "
 				  	id={'row'}
 				  	disabled={isGameOver}
-				  	onChange={this.handleTextFormChange} />
-				  <TextFormControl
+				  	onChange={this.handleDigitFormChange} />
+				  <DigitFormControl
 				  	label="Enter column: "
 				  	id={'column'}
 				  	disabled={isGameOver}
-				  	onChange={this.handleTextFormChange} />
+				  	onChange={this.handleDigitFormChange} />
 				  <Button
 				  	disabled={diableAttackButton}
 				  	onClick={this.handleAttackClick}>Attack!</Button>

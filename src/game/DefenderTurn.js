@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Board from './Board';
-import TextFormControl from '../control-component/TextFormControl';
+import DigitFormControl from '../control-component/DigitFormControl';
 import SelectFormControl from '../control-component/SelectFormControl';
 import AlertDialog from '../dialog/AlertDialog';
 import { Button } from 'react-bootstrap';
@@ -49,7 +49,7 @@ class DefenderTurn extends Component {
       }]
     };
     this.checkIfCanPlaceShip = this.checkIfCanPlaceShip.bind(this);
-    this.handleTextFormChange = this.handleTextFormChange.bind(this);
+    this.handleDigitFormChange = this.handleDigitFormChange.bind(this);
     this.handleSelectShipChange = this.handleSelectShipChange.bind(this);
     this.handleSelectDirectionsChange = this.handleSelectDirectionsChange.bind(this);
     this.handlePlaceShipClick = this.handlePlaceShipClick.bind(this);
@@ -58,7 +58,7 @@ class DefenderTurn extends Component {
     this.handleCloseDialog = this.handleCloseDialog.bind(this);
   }
 
-  handleTextFormChange(id, value) {
+  handleDigitFormChange(id, value) {
   	if (id === 'row') {
   		this.setState({row: value});
   	} else if (id === 'column') {
@@ -170,17 +170,19 @@ class DefenderTurn extends Component {
 				<Board
           boardId="DefenderBoard"
           gameBoards={this.props.gameBoards} />
-			  <TextFormControl label="Enter row: " id={'row'} onChange={this.handleTextFormChange} />
-			  <TextFormControl label="Enter column: " id={'column'} onChange={this.handleTextFormChange} />
+			  <DigitFormControl label="Enter row: " id={'row'} onChange={this.handleDigitFormChange} />
+			  <DigitFormControl label="Enter column: " id={'column'} onChange={this.handleDigitFormChange} />
 			  <SelectFormControl
           label="Ship type: "
           id={'shipType'}
           items={ships}
+          controlWidth={5}
           onChange={this.handleSelectShipChange} />
         <SelectFormControl
           label="Ship direction: "
           id={'shipDirection'}
           items={directions}
+          controlWidth={3}
           onChange={this.handleSelectDirectionsChange} />
 			  <div className='btn-group'>
 			  	<Button disabled={disablePlacShipButton} onClick={this.handlePlaceShipClick}>Place ship</Button>
