@@ -19,6 +19,7 @@ class AttackerTurn extends Component {
     this.handleDigitFormChange = this.handleDigitFormChange.bind(this);
     this.handleAttackClick = this.handleAttackClick.bind(this);
     this.handleResetClick = this.handleResetClick.bind(this);
+    this.handleCellClick = this.handleCellClick.bind(this);
   }
 
   handleDigitFormChange(id, value) {
@@ -29,22 +30,35 @@ class AttackerTurn extends Component {
     }
   }
 
+  handleCellClick(row, column) {
+    const { attackerGameBoards } = this.state;
+    const { isGameOver } = this.props;
+    if (attackerGameBoards[row][column] || isGameOver) {
+      return;
+    }
+
+    this.setState({
+      row: row,
+      column: column
+    }, () => this.handleAttackClick());
+  }
+
   handleAttackClick() {
-  	const { defenderGameBoards } = this.props;
-  	const { row, column } = this.state;
-  	var attackerGameBoards = this.state.attackerGameBoards.slice();
+    const { defenderGameBoards } = this.props;
+    const { row, column } = this.state;
+    var attackerGameBoards = this.state.attackerGameBoards.slice();
 
-  	if (defenderGameBoards[row][column] === 1) {
-  		attackerGameBoards[row][column] = 1;
-  	} else {
-  		attackerGameBoards[row][column] = 2;
-  	}
+    if (defenderGameBoards[row][column] === 1) {
+      attackerGameBoards[row][column] = 1;
+    } else {
+      attackerGameBoards[row][column] = 2;
+    }
 
-		this.setState({
-			attackerGameBoards: attackerGameBoards,
-		});
+    this.setState({
+      attackerGameBoards: attackerGameBoards,
+    });
 
-		this.props.onAttackClick(row, column);
+    this.props.onAttackClick(row, column);
   }
 
   handleResetClick() {
@@ -71,7 +85,8 @@ class AttackerTurn extends Component {
 				<h1>Attacker turn</h1>
 					<Board
 						boardId="AttackerBoard"
-						gameBoards={attackerGameBoards} />
+						gameBoards={attackerGameBoards}
+            onCellClick={this.handleCellClick} />
 				  <DigitFormControl
 				  	label="Enter row: "
 				  	id={'row'}

@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
 
 class Board extends Component {
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(rowIndex, columnIndex) {
+    this.props.onCellClick(rowIndex, columnIndex);
+  }
+
   renderRow(rowIndex) {
     const { gameBoards, boardId } = this.props;
 
@@ -17,7 +26,8 @@ class Board extends Component {
         <td
           key={columnIndex}
           id={boardId + "-td" + rowIndex + columnIndex} 
-          className={className} />
+          className={className}
+          onClick={() => this.handleClick(rowIndex, columnIndex)} />
       );
     }
 

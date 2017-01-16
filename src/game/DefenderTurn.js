@@ -56,6 +56,7 @@ class DefenderTurn extends Component {
     this.handleResetClick = this.handleResetClick.bind(this);
     this.handleConfirmClick = this.handleConfirmClick.bind(this);
     this.handleCloseDialog = this.handleCloseDialog.bind(this);
+    this.handleCellClick = this.handleCellClick.bind(this);
   }
 
   handleDigitFormChange(id, value) {
@@ -64,6 +65,13 @@ class DefenderTurn extends Component {
   	} else if (id === 'column') {
   		this.setState({column: value});
     }
+  }
+
+  handleCellClick(row, column) {
+    this.setState({
+      row: row,
+      column: column
+    }, () => this.handlePlaceShipClick());
   }
 
   handleSelectShipChange(e) {
@@ -83,6 +91,14 @@ class DefenderTurn extends Component {
   checkIfCanPlaceShip() {
     const { gameBoards } = this.props;
     const { row, column, selectedShip, selectedDirection } = this.state;
+
+    if (selectedShip.amount === 0) {
+        this.setState({
+          row: null,
+          column: null
+        });
+        return false;
+    }
 
     if (selectedDirection === 'horizontal') {
       if (column + selectedShip.size > gameBoards.length) {
@@ -122,10 +138,12 @@ class DefenderTurn extends Component {
     }
 
     this.updateShipAndSelectedShipState();
-    this.props.onPlaceShipClick(this.state.row,
-                                this.state.column,
-                                this.state.selectedShip,
-                                this.state.selectedDirection);
+    this.props.onPlaceShipClick(
+      this.state.row,
+      this.state.column,
+      this.state.selectedShip,
+      this.state.selectedDirection
+    );
   }
 
   handleResetClick() {
@@ -169,9 +187,16 @@ class DefenderTurn extends Component {
 				<h1>Defender turn</h1>
 				<Board
           boardId="DefenderBoard"
-          gameBoards={this.props.gameBoards} />
-			  <DigitFormControl label="Enter row: " id={'row'} onChange={this.handleDigitFormChange} />
-			  <DigitFormControl label="Enter column: " id={'column'} onChange={this.handleDigitFormChange} />
+          gameBoards={this.props.gameBoards}
+          onCellClick={this.handleCellClick} />
+			  <DigitFormControl
+          label="Enter row: "
+          id={'row'}
+          onChange={this.handleDigitFormChange} />
+			  <DigitFormControl
+          label="Enter column: "
+          id={'column'}
+          onChange={this.handleDigitFormChange} />
 			  <SelectFormControl
           label="Ship type: "
           id={'shipType'}
