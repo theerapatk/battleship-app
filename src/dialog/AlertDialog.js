@@ -12,7 +12,7 @@ class AlertDialog extends Component {
   }
 
   render() {
-    const { isDialogActive, title, content } = this.props;
+    const { isDialogActive, title, bodyMessage } = this.props;
 
     return (
       <div>
@@ -27,7 +27,7 @@ class AlertDialog extends Component {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            {content}
+            {bodyMessage}
           </Modal.Body>
           <Modal.Footer>
             <Button bsStyle="primary" onClick={this.handleCloseDialog}>OK</Button>

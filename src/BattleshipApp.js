@@ -18,13 +18,13 @@ class BattleshipApp extends Component {
       missedCount: 0
     };
     this.placedShips = [];
-    this.cooridnateMap = {};
+    this.coordinateAndIdMap = {};
     this.handlePlaceShipClick = this.handlePlaceShipClick.bind(this);
     this.handleConfirmClick = this.handleConfirmClick.bind(this);
     this.handleAttackClick = this.handleAttackClick.bind(this);
   }
 
-  fillAdjacentCell(row, column, gameBoards, adjacentValue) {
+  fillAdjacentCell(row, column, gameBoards) {
     var gameBoardsLength = gameBoards.length;
     for (let rowIndex = row - 1; rowIndex < row + 2; rowIndex++) {
       for (let columnIndex = column - 1; columnIndex < column + 2; columnIndex++) {
@@ -32,7 +32,7 @@ class BattleshipApp extends Component {
             -1 < columnIndex && columnIndex < gameBoardsLength &&
             (rowIndex !== row || columnIndex !== column)) {
           if (gameBoards[rowIndex][columnIndex] == null) {
-            gameBoards[rowIndex][columnIndex] = adjacentValue;
+            gameBoards[rowIndex][columnIndex] = BattleshipApp.CONFIG.adjacentValue;
           }
         }
       }
@@ -42,7 +42,6 @@ class BattleshipApp extends Component {
   handlePlaceShipClick(row, column, ship, direction) {
     var gameBoards = this.state.gameBoards.slice();
     var shipSize = ship.size;
-    var adjacentValue = 2;
     var placedShip = {
       name: ship.name,
       value: ship.value,
@@ -56,20 +55,19 @@ class BattleshipApp extends Component {
       for (let i = 0; i < shipSize; i++) {
         let shipColumn = column + i;
         gameBoards[row][shipColumn] = 1;
-        this.cooridnateMap[row + '' + shipColumn] = placedShip.id;
-        this.fillAdjacentCell(row, shipColumn, gameBoards, adjacentValue);
+        this.coordinateAndIdMap[row + '' + shipColumn] = placedShip.id;
+        this.fillAdjacentCell(row, shipColumn, gameBoards);
       }
     } else if (direction === 'vertical') {
       for (let i = 0; i < shipSize; i++) {
         let shipRow = row + i;
         gameBoards[shipRow][column] = 1;
-        this.cooridnateMap[shipRow + '' + column] = placedShip.id;
-        this.fillAdjacentCell(shipRow, column, gameBoards, adjacentValue);
+        this.coordinateAndIdMap[shipRow + '' + column] = placedShip.id;
+        this.fillAdjacentCell(shipRow, column, gameBoards);
       }
     }
 
     this.placedShips.push(placedShip);
-
     this.setState({
       gameBoards: gameBoards
     });
@@ -80,12 +78,12 @@ class BattleshipApp extends Component {
   }
 
   handleAttackClick(row, column) {
-    var idFromCoordianate = this.cooridnateMap[row + '' + column];
+    var idFromCoordinate = this.coordinateAndIdMap[row + '' + column];
 
-    if (idFromCoordianate != null) {
+    if (idFromCoordinate != null) {
       for (let i = 0; i < this.placedShips.length; i++) {
         var placedShip = this.placedShips[i];
-        if (placedShip.id === idFromCoordianate) {
+        if (placedShip.id === idFromCoordinate) {
           placedShip.hit++;
           this.setState({
             attackResultText: 'Hit!',
@@ -121,7 +119,6 @@ class BattleshipApp extends Component {
 
   render() {
     const { isDefenderTurn, gameBoards, attackResultText, shipSunkNumber, movesCount, missedCount } = this.state;
-
     var isGameOver = this.checkIfGameIsOver();
 
     return (
@@ -143,6 +140,12 @@ class BattleshipApp extends Component {
       )}
       </div>
     );
+  }
+
+  static get CONFIG() {
+    return {
+      adjacentValue: 2
+    };
   }
 }
 

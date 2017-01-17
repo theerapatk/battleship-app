@@ -179,8 +179,8 @@ class DefenderTurn extends Component {
   render() {
     const disablePlacShipButton = !this.checkIfAllInputFieldsAreValid();
     const disableConfirmButton = !this.checkIfAllShipsArePlaced();
-
     const { ships, directions, isDialogActive } = this.state;
+    const { alertTitle, alertBody } = DefenderTurn.CONFIG
 
     return (
       <div>
@@ -216,11 +216,27 @@ class DefenderTurn extends Component {
 			  </div>
         <AlertDialog
           isDialogActive={isDialogActive}
-          title={'Alert'}
-          content={'Cannot place a ship, please modify the criteria.'}
+          title={alertTitle}
+          bodyMessage={alertBody}
           onCloseDialog={this.handleCloseDialog} />
 			</div>
     );
+  }
+
+  static get CONFIG() {
+    return {
+      alertTitle: 'Alert',
+      alertBody:
+        <p>
+          Cannot place here, please modify the criteria. You are NOT allowed to,
+          <ul>
+            <li>Place a ship on an already placed cell</li>
+            <li>Place a ship on adjacent to others</li>
+            <li>Place some part of a ship outside of the board</li>
+            <li>Place a ship with no amount left</li>
+          </ul>
+        </p>
+    };
   }
 }
 
